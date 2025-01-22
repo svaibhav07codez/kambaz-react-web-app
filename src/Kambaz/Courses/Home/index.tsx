@@ -7,7 +7,7 @@ export default function Home() {
         <td valign="top">
           <Modules />
         </td>
-        <td valign="top" halign="middle">
+        <td valign="top">
           <CourseStatus />
         </td>
       </tr>
