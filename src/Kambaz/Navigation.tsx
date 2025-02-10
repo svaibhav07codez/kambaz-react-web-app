@@ -11,7 +11,7 @@ export default function KambazNavigation() {
     <a id="wd-neu-link" target="_blank" 
        href="https://www.northeastern.edu/"
        className="list-group-item bg-black border-0 text-center">
-       <img src="public/NEU.png" width="75px" /></a>
+       <img src="NEU.png" width="75px" /></a>
 
     <Link to="/Kambaz/Account" id="wd-account-link"
        className="list-group-item text-center border-0 bg-black text-white">
