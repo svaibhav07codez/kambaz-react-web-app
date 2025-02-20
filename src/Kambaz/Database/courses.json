@@ -1,0 +1,80 @@
+[
+    {
+      "_id": "CS 5010",
+      "name": "Programming Design Paradigm",
+      "number": "CS 5010",
+      "img": "pdp.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D123",
+      "credits": 4,
+      "description": "Software Developer"
+    },
+    {
+      "_id": "CS 5011",
+      "name": "Recitation for Programming Design Paradigm",
+      "number": "CS 5011",
+      "img": "recitation.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D123",
+      "credits": 3,
+      "description": "Lab"
+    },
+    {
+      "_id": "CS 5100",
+      "name": "Foundations of AI",
+      "number": "CS 5100",
+      "img": "fai.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D123",
+      "credits": 4,
+      "description": "AI developer"
+    },
+    {
+      "_id": "CS 5610",
+      "name": "Web Development",
+      "number": "CS 5610",
+      "img": "webdev.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D134",
+      "credits": 3,
+      "description": "Full-Stack Web Developer"
+    },
+    {
+      "_id": "CS 5800",
+      "name": "Algorithms",
+      "number": "CS 5800",
+      "img": "algo.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D134",
+      "credits": 3,
+      "description": "Algorithms Specialist"
+    },
+    {
+      "_id": "RS106",
+      "name": "Career Design Course",
+      "number": "RS106",
+      "img": "cdc.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "D134",
+      "credits": 3,
+      "description": "Prepare for your career ahead"
+    },
+    {
+      "_id": "RS107",
+      "name": "Fall24 - Career Preparation & Coop",
+      "number": "RS107",
+      "img": "coop.png",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "Languages",
+      "credits": 3,
+      "description": "Requirement for coop approval",
+      "author": "654f9ec2ea7ead465908d1e3"
+    }
+  ]

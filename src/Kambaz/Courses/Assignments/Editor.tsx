@@ -1,6 +1,25 @@
 import { IoCloseOutline } from "react-icons/io5";
+import { Link, useParams } from "react-router";
+import * as db from "../../Database";
 
 export default function Editor() {
+  // Extract course ID and assignment ID from URL
+  const { cid, aid } = useParams();
+
+  // Find the matching assignment in your database
+  const assignment = db.assignments.find(
+    (a) => a._id === aid && a.course === cid
+  );
+
+  // If no matching assignment is found, show a fallback
+  if (!assignment) {
+    return <div>Assignment not found.</div>;
+  }
+
+  // In a real app, you might store these in local state for editing, e.g.:
+  // const [title, setTitle] = useState(assignment.title);
+  // But for now, we’ll just display them directly from the assignment object.
+
   return (
     <div id="wd-assignments-editor" className="ms-5 mt-3">
       <div className="row mb-3">
@@ -8,7 +27,12 @@ export default function Editor() {
           <label htmlFor="wd-name">
             <b>Assignment Name</b>
           </label>
-          <input id="wd-name" className="form-control mt-2" value="A1" />
+          <input
+            id="wd-name"
+            className="form-control mt-2"
+            value={assignment.title}
+            onChange={() => {}}
+          />
         </div>
       </div>
 
@@ -23,7 +47,9 @@ export default function Editor() {
               className="form-control mt-2"
               cols={50}
               rows={15}
-              value={`The assignment is available online\n\nSubmit a link to the landing page of your Web application running on Netlify.\n\nThe landing page should include the following:\n\n- Your full name and section\n- Links to each of the lab assignments\n- Link to the Kambaz application\n- Links to all relevant source code repositories\n\nThe Kambaz application should include a link to navigate back to the landing page.`}
+              // Fallback if description is not in your DB
+              value={assignment.description || ""}
+              onChange={() => {}}
             ></textarea>
           </div>
         </div>
@@ -36,7 +62,14 @@ export default function Editor() {
           </label>
         </div>
         <div className="col-sm-7">
-          <input id="wd-points" className="form-control" placeholder="100" />
+          <input
+            id="wd-points"
+            className="form-control"
+            placeholder="100"
+            // Fallback if points is not in your DB
+            value={assignment.points ?? ""}
+            onChange={() => {}}
+          />
         </div>
       </div>
 
@@ -140,21 +173,23 @@ export default function Editor() {
           <fieldset className="border p-2">
             <div className="wd-assign-to-input-wrapper">
               <div className="wd-assign-to-input-content">
-                Everyone <IoCloseOutline></IoCloseOutline>
+                Everyone <IoCloseOutline />
               </div>
               <label htmlFor="wd-assign-to" className="col-form-label">
                 <b>Assign to</b>
               </label>
-              <input
-                id="wd-assign-to"
-                className="form-control"
-                placeholder=""
-              />
+              <input id="wd-assign-to" className="form-control" placeholder="" />
             </div>
             <label htmlFor="wd-due-date" className="col-form-label">
               Due
             </label>
-            <input id="wd-due-date" className="form-control" type="date" />
+            <input
+              id="wd-due-date"
+              className="form-control"
+              type="date"
+              value={assignment.dueDate || ""}
+              onChange={() => {}}
+            />
             <div className="d-flex">
               <div className="me-2">
                 <label htmlFor="wd-available-from" className="col-form-label">
@@ -165,6 +200,8 @@ export default function Editor() {
                   className="form-control"
                   type="date"
                   style={{ width: "110px" }}
+                  value={assignment.availableFrom || ""}
+                  onChange={() => {}}
                 />
               </div>
               <div className="float-end">
@@ -176,6 +213,8 @@ export default function Editor() {
                   className="form-control"
                   type="date"
                   style={{ width: "110px" }}
+                  value={assignment.availableUntil || ""}
+                  onChange={() => {}}
                 />
               </div>
             </div>
@@ -186,12 +225,24 @@ export default function Editor() {
 
       <div className="row mt-4">
         <div className="col-12 d-flex justify-content-end">
-          <button id="wd-cancel" className="btn btn-secondary me-1">
+          {/* 
+            Clicking Cancel or Save should return to:
+            /Kambaz/Courses/<cid>/Assignments 
+          */}
+          <Link
+            id="wd-cancel"
+            className="btn btn-secondary me-1"
+            to={`/Kambaz/Courses/${cid}/Assignments`}
+          >
             Cancel
-          </button>
-          <button id="wd-save" className="btn btn-primary btn-danger">
+          </Link>
+          <Link
+            id="wd-save"
+            className="btn btn-primary btn-danger"
+            to={`/Kambaz/Courses/${cid}/Assignments`}
+          >
             Save
-          </button>
+          </Link>
         </div>
       </div>
     </div>
