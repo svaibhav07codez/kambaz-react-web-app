@@ -1,6 +1,14 @@
 import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
-export default function ModulesControls() {
+import { Button } from "react-bootstrap";
+import ModuleEditor from "./ModuleEditor";
+import { useState } from "react";
+export default function ModulesControls(
+  { moduleName, setModuleName, addModule }:
+  { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }) {
+   const [show, setShow] = useState(false);
+   const handleClose = () => setShow(false);
+   const handleShow = () => setShow(true); 
   return (
     <div
       id="wd-modules-controls"
@@ -74,14 +82,17 @@ export default function ModulesControls() {
           </li>
         </ul>
       </div>
-      <button
-        id="wd-add-module-btn"
-        className="btn btn-md btn-danger me-1 flex-shrink-0"
-        style={{ whiteSpace: "nowrap" }}
-      >
-        <FaPlus className="position-relative" style={{ bottom: "1px" }} />
-        Module
-      </button>
+      
+      <div id="wd-modules-controls" className="text-nowrap">
+        <Button variant="danger" onClick={handleShow} >
+          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+          Module
+        </Button>
+      
+        <ModuleEditor show={show} handleClose={handleClose} dialogTitle="Add Module"
+         moduleName={moduleName} setModuleName={setModuleName} addModule={addModule} />
+      </div>
+      
     </div>
   );
 }
