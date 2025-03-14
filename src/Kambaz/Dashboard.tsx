@@ -2,6 +2,7 @@ import { Button, Card, Col, FormControl, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as db from "./Database";
+import AccountNavigation from "./Account/Navigation";
 
 export default function Dashboard({
   courses, course, setCourse, addNewCourse, deleteCourse, updateCourse
@@ -18,7 +19,8 @@ export default function Dashboard({
   return (
     <div className="p-4" id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-
+      <td valign="top"><AccountNavigation /></td>
+      <td valign="top">
       {isFaculty && (
         <>
           <h5>New Course
@@ -98,6 +100,7 @@ export default function Dashboard({
             </Col>
           ))}
       </Row>
+      </td>
     </div>
   );
 }
