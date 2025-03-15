@@ -11,29 +11,18 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Modules() {
   const { cid } = useParams();
   const [moduleName, setModuleName] = useState("");
-  /*const [modules, setModules] = useState<any[]>(db.modules);
-  const addModule = () => {
-    setModules([ ...modules, { _id: uuidv4(), name: moduleName, course: cid, lessons: [] } ]);
-    setModuleName("");
-  };
-  const deleteModule = (moduleId: string) => {
-    setModules(modules.filter((m) => m._id !== moduleId));
-  };
-  const editModule = (moduleId: string) => {
-    setModules(modules.map((m) => (m._id === moduleId ? { ...m, editing: true } : m)));
-  };
-  const updateModule = (module: any) => {
-    setModules(modules.map((m) => (m._id === module._id ? module : m)));
-  };*/
+  
   const { modules } = useSelector((state: any) => state.modulesReducer);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch()
 
   return (
     <div id="wd-modules">
+      {currentUser?.role === "FACULTY" && (
       <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
           dispatch(addModule({ name: moduleName, course: cid }));
           setModuleName("");
-        }}/>
+        }}/> )}
       <div>
         <ul id="wd-modules" className="list-group rounded-0">
         {modules
@@ -43,22 +32,28 @@ export default function Modules() {
               <div className="wd-title p-3 ps-2 bg-secondary">
                 <BsGripVertical className="me-2 fs-3" /> 
                 {!module.editing && module.name}
-                { module.editing && (
-                  <FormControl className="w-50 d-inline-block"
-                          onChange={(e) => dispatch(updateModule({ ...module, name: e.target.value }))}
+                { module.editing && currentUser?.role === "FACULTY" && (
+                  <FormControl 
+                          className="w-50 d-inline-block"
+                          onChange={(e) => 
+                            dispatch(updateModule({ ...module, name: e.target.value }))
+                          }
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
                               dispatch(updateModule({ ...module, editing: false }));
                             }
                           }}
-                          defaultValue={module.name}/>
+                          defaultValue={module.name}
+                      />
                   )}
+                  {currentUser?.role === "FACULTY" && (
                 <ModuleControlButtons 
                   moduleId={module._id} 
                   deleteModule={(moduleId) => {
                     dispatch(deleteModule(moduleId));
                   }} 
                   editModule={(moduleId) => dispatch(editModule(moduleId))}/>
+                )}
               </div>
               {module.lessons && (
                 <ul className="wd-lessons list-group rounded-0">

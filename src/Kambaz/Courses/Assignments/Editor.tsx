@@ -1,24 +1,64 @@
 import { IoCloseOutline } from "react-icons/io5";
-import { Link, useParams } from "react-router";
-import * as db from "../../Database";
+import { useNavigate, useParams } from "react-router";
+// import * as db from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { updateAssignment } from "./reducer";
 
 export default function Editor() {
-  // Extract course ID and assignment ID from URL
-  const { cid, aid } = useParams();
+  const { aid } = useParams();
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const isFaculty = currentUser.role === "FACULTY";
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const [assignment, setAssignment] = useState(() => {
+    const existingAssignment = assignments.find(
+      (assignment: any) => assignment._id === aid
+    );
+    return existingAssignment
+      ? { ...existingAssignment } // Edit mode
+      : null; // Prevent unintended creation
+  });
+  
+    /*return existingAssignment
+      ? { ...existingAssignment }
+      : {
+          course: cid,
+          title: "",
+          description: "",
+          points: "",
+          dueDate: "",
+          availableAfterDate: "",
+          availableUntilDate: "",
+        };
+  });*/
+  const dispatch = useDispatch();
+  const handleEdit = () => {
+    navigate(-1);
+  };
+  const handleSave = () => {
+    if (aid) {
+      dispatch(updateAssignment(assignment));
+    }        
+    handleEdit();
+  };
+  const handleCancel = () => {
+    handleEdit();
+  };
 
-  // Find the matching assignment in your database
-  const assignment = db.assignments.find(
-    (a) => a._id === aid && a.course === cid
-  );
+  const formatDateTime = (dateString: string | undefined | null): string => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
 
-  // If no matching assignment is found, show a fallback
-  if (!assignment) {
-    return <div>Assignment not found.</div>;
-  }
+    // Format date as YYYY-MM-DDTHH:mm
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  // In a real app, you might store these in local state for editing, e.g.:
-  // const [title, setTitle] = useState(assignment.title);
-  // But for now, we’ll just display them directly from the assignment object.
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   return (
     <div id="wd-assignments-editor" className="ms-5 mt-3">
@@ -31,7 +71,10 @@ export default function Editor() {
             id="wd-name"
             className="form-control mt-2"
             value={assignment.title}
-            onChange={() => {}}
+            onChange={(e) => {
+              setAssignment({ ...assignment, title: e.target.value });
+            }}
+            disabled={!isFaculty}
           />
         </div>
       </div>
@@ -47,10 +90,13 @@ export default function Editor() {
               className="form-control mt-2"
               cols={50}
               rows={15}
-              // Fallback if description is not in your DB
-              value={assignment.description || ""}
-              onChange={() => {}}
-            ></textarea>
+              onChange={(e) => {
+                setAssignment({ ...assignment, description: e.target.value });
+              }}
+              disabled={!isFaculty}
+            >
+              {assignment.description}
+            </textarea>
           </div>
         </div>
       </div>
@@ -66,9 +112,10 @@ export default function Editor() {
             id="wd-points"
             className="form-control"
             placeholder="100"
-            // Fallback if points is not in your DB
-            value={assignment.points ?? ""}
-            onChange={() => {}}
+            onChange={(e) => {
+              setAssignment({ ...assignment, points: e.target.value });
+            }}
+            disabled={!isFaculty}
           />
         </div>
       </div>
@@ -80,7 +127,7 @@ export default function Editor() {
           </label>
         </div>
         <div className="col-sm-7">
-          <select id="wd-group" className="form-select">
+          <select id="wd-group" className="form-select" disabled={!isFaculty}>
             <option value="VAL1" selected>
               Assignments
             </option>
@@ -98,7 +145,11 @@ export default function Editor() {
           </label>
         </div>
         <div className="col-sm-7">
-          <select id="wd-display-grade-as" className="form-select">
+          <select
+            id="wd-display-grade-as"
+            className="form-select"
+            disabled={!isFaculty}
+          >
             <option value="VAL1" selected>
               Percentage
             </option>
@@ -118,7 +169,11 @@ export default function Editor() {
         <div className="col-md-7">
           <fieldset className="border p-2">
             <div>
-              <select id="wd-submission-type" className="form-select">
+              <select
+                id="wd-submission-type"
+                className="form-select"
+                disabled={!isFaculty}
+              >
                 <option value="VAL1" selected>
                   Online
                 </option>
@@ -130,31 +185,47 @@ export default function Editor() {
               </span>
               <br />
               <br />
-              <input id="wd-text-entry" type="checkbox" />
+              <input id="wd-text-entry" type="checkbox" disabled={!isFaculty} />
               <label htmlFor="wd-text-entry" className="ms-1">
                 Text Entry
               </label>
               <br />
               <br />
-              <input id="wd-website-url" type="checkbox" />
+              <input
+                id="wd-website-url"
+                type="checkbox"
+                disabled={!isFaculty}
+              />
               <label htmlFor="wd-website-url" className="ms-1">
                 Website URL
               </label>
               <br />
               <br />
-              <input id="wd-media-recordings" type="checkbox" />
+              <input
+                id="wd-media-recordings"
+                type="checkbox"
+                disabled={!isFaculty}
+              />
               <label htmlFor="wd-media-recordings" className="ms-1">
                 Media Recordings
               </label>
               <br />
               <br />
-              <input id="wd-student-annotation" type="checkbox" />
+              <input
+                id="wd-student-annotation"
+                type="checkbox"
+                disabled={!isFaculty}
+              />
               <label htmlFor="wd-student-annotation" className="ms-1">
                 Student Annotation
               </label>
               <br />
               <br />
-              <input id="wd-file-upload" type="checkbox" />
+              <input
+                id="wd-file-upload"
+                type="checkbox"
+                disabled={!isFaculty}
+              />
               <label htmlFor="wd-file-upload" className="ms-1">
                 File Uploads
               </label>
@@ -178,7 +249,12 @@ export default function Editor() {
               <label htmlFor="wd-assign-to" className="col-form-label">
                 <b>Assign to</b>
               </label>
-              <input id="wd-assign-to" className="form-control" placeholder="" />
+              <input
+                id="wd-assign-to"
+                className="form-control"
+                placeholder=""
+                disabled={!isFaculty}
+              />
             </div>
             <label htmlFor="wd-due-date" className="col-form-label">
               Due
@@ -186,9 +262,12 @@ export default function Editor() {
             <input
               id="wd-due-date"
               className="form-control"
-              type="date"
-              value={assignment.dueDate || ""}
-              onChange={() => {}}
+              type="datetime-local"
+              value={formatDateTime(assignment.dueDate)}
+              onChange={(e) => {
+                setAssignment({ ...assignment, dueDate: e.target.value });
+              }}
+              disabled={!isFaculty}
             />
             <div className="d-flex">
               <div className="me-2">
@@ -198,10 +277,16 @@ export default function Editor() {
                 <input
                   id="wd-available-from"
                   className="form-control"
-                  type="date"
-                  style={{ width: "110px" }}
-                  value={assignment.availableFrom || ""}
-                  onChange={() => {}}
+                  type="datetime-local"
+                  style={{ width: "155px" }}
+                  value={formatDateTime(assignment.availableAfterDate)}
+                  onChange={(e) => {
+                    setAssignment({
+                      ...assignment,
+                      availableAfterDate: e.target.value,
+                    });
+                  }}
+                  disabled={!isFaculty}
                 />
               </div>
               <div className="float-end">
@@ -211,10 +296,16 @@ export default function Editor() {
                 <input
                   id="wd-available-until"
                   className="form-control"
-                  type="date"
-                  style={{ width: "110px" }}
-                  value={assignment.availableUntil || ""}
-                  onChange={() => {}}
+                  type="datetime-local"
+                  style={{ width: "155px" }}
+                  value={formatDateTime(assignment.availableUntilDate)}
+                  onChange={(e) => {
+                    setAssignment({
+                      ...assignment,
+                      availableUntilDate: e.target.value,
+                    });
+                  }}
+                  disabled={!isFaculty}
                 />
               </div>
             </div>
@@ -222,29 +313,30 @@ export default function Editor() {
         </div>
       </div>
       <hr />
-
-      <div className="row mt-4">
-        <div className="col-12 d-flex justify-content-end">
-          {/* 
-            Clicking Cancel or Save should return to:
-            /Kambaz/Courses/<cid>/Assignments 
-          */}
-          <Link
-            id="wd-cancel"
-            className="btn btn-secondary me-1"
-            to={`/Kambaz/Courses/${cid}/Assignments`}
-          >
-            Cancel
-          </Link>
-          <Link
-            id="wd-save"
-            className="btn btn-primary btn-danger"
-            to={`/Kambaz/Courses/${cid}/Assignments`}
-          >
-            Save
-          </Link>
+      {isFaculty && (
+        <div className="row mt-4">
+          <div className="col-12 d-flex justify-content-end">
+            <button
+              id="wd-cancel"
+              className="btn btn-secondary me-1"
+              onClick={() => {
+                handleCancel();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              id="wd-save"
+              className="btn btn-primary btn-danger"
+              onClick={() => {
+                handleSave();
+              }}
+            >
+              Save
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

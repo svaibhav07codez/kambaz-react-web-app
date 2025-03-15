@@ -81,14 +81,14 @@ export default function Dashboard({
                           onClick={(event) => {
                             event.preventDefault();
                             setCourse(course);
-                          }}
+                          } }
                           className="btn btn-warning me-2 float-end">
                           Edit
                         </button>
                         <button onClick={(event) => {
                           event.preventDefault();
                           deleteCourse(course._id);
-                        }} className="btn btn-danger float-end"
+                        } } className="btn btn-danger float-end"
                           id="wd-delete-course-click">
                           Delete
                         </button>
