@@ -32,6 +32,12 @@ export default function TOC() {
           active={pathname.includes("Lab4/*")}> Lab 4 
         </Nav.Link> 
       </Nav.Item>
+      <br></br>
+      <Nav.Item> 
+        <Nav.Link as={Link} to="/Labs/Lab5" id="wd-a5"
+          active={pathname.includes("Lab5/*")}> Lab 5 
+        </Nav.Link> 
+      </Nav.Item>
       <br></br> 
       <Nav.Item>
         <Nav.Link href="#/Kambaz">Kambaz</Nav.Link>
