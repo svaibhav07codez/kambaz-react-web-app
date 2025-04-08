@@ -23,7 +23,7 @@ export default function BootstrapNavigation() {
       <div id="wd-css-navigating-with-cards">
         <h2>Cards</h2>
         <Card style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="img.jpg" />
+          <Card.Img variant="top" src="images/angular.png" />
           <Card.Body>
             <Card.Title>Stacking Starship</Card.Title>
             <Card.Text>

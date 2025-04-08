@@ -1,52 +1,91 @@
-import Nav from "react-bootstrap/Nav";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+
 export default function TOC() {
   const { pathname } = useLocation();
   return (
-    <Nav variant="pills" id="wd-toc">
-      <Nav.Item>
-        <Nav.Link href="#/Labs">Labs</Nav.Link>
-      </Nav.Item>
-      <br></br>
-      <Nav.Item> 
-        <Nav.Link as={Link} to="/Labs/Lab1" id="wd-a1"
-          active={pathname.includes("Lab1")}> Lab 1 
-        </Nav.Link> 
-      </Nav.Item>
-      <br></br>
-      <Nav.Item> 
-        <Nav.Link as={Link} to="/Labs/Lab2" id="wd-a2"
-          active={pathname.includes("Lab2")}> Lab 2 
-        </Nav.Link> 
-      </Nav.Item>
-      <br></br>
-      <Nav.Item> 
-        <Nav.Link as={Link} to="/Labs/Lab3" id="wd-a3"
-          active={pathname.includes("Lab3/*")}> Lab 3 
-        </Nav.Link> 
-      </Nav.Item>
-      <br></br>
-      <Nav.Item> 
-        <Nav.Link as={Link} to="/Labs/Lab4" id="wd-a4"
-          active={pathname.includes("Lab4/*")}> Lab 4 
-        </Nav.Link> 
-      </Nav.Item>
-      <br></br>
-      <Nav.Item> 
-        <Nav.Link as={Link} to="/Labs/Lab5" id="wd-a5"
-          active={pathname.includes("Lab5/*")}> Lab 5 
-        </Nav.Link> 
-      </Nav.Item>
-      <br></br> 
-      <Nav.Item>
-        <Nav.Link href="#/Kambaz">Kambaz</Nav.Link>
-      </Nav.Item>
-      <br></br>
-      <Nav.Item>
-        <Nav.Link id="wd-github" href="https://github.com/svaibhav07codez/kambaz-react-web-app/tree/a3">My GitHub</Nav.Link>
-      </Nav.Item>
-    </Nav>
- );}
- 
-  
+    <ul className="nav nav-pills">
+      <li className="nav-item">
+        <a id="wd-a" href="#/Labs" className="nav-link">
+          Labs
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-a1"
+          href="#/Labs/Lab1"
+          className={`nav-link ${pathname.includes("Lab1") ? "active" : ""}`}
+        >
+          Lab 1
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-a2"
+          href="#/Labs/Lab2"
+          className={`nav-link ${pathname.includes("Lab2") ? "active" : ""}`}
+        >
+          Lab 2
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-a3"
+          href="#/Labs/Lab3"
+          className={`nav-link ${pathname.includes("Lab3") ? "active" : ""}`}
+        >
+          Lab 3
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-a4"
+          href="#/Labs/Lab4"
+          className={`nav-link ${pathname.includes("Lab4") ? "active" : ""}`}
+        >
+          Lab 4
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-a5"
+          href="#/Labs/Lab5"
+          className={`nav-link ${pathname.includes("Lab5") ? "active" : ""}`}
+        >
+          Lab 5
+        </a>
+      </li>
+      <li className="nav-item">
+        <a id="wd-k" href="#/Kambaz" className="nav-link">
+          Kambaz
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-github-source-code"
+          href="https://github.com/svaibhav07codez/kambaz-react-web-app"
+          className="nav-link"
+        >
+          React App
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-github-source-code"
+          href="https://github.com/svaibhav07codez/kambaz-node-server-app"
+          className="nav-link"
+        >
+          Node Server App
+        </a>
+      </li>
+      <li className="nav-item">
+        <a
+          id="wd-github"
+          href="https://github.com/svaibhav07codez"
+          className="nav-link"
+        >
+          My GitHub
+        </a>
+      </li>
+    </ul>
+  );
+}

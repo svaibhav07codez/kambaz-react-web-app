@@ -4,19 +4,20 @@ import Editor from "./Assignments/Editor";
 import Home from "./Home";
 import Modules from "./Modules";
 import CoursesNavigation from "./Navigation";
-import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router";
 import PeopleTable from "./People/Table";
 
-export default function Courses({ courses }: { courses: any[]; }) {
+export default function Courses({ courses }: { courses: any[] }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
   const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <div id="wd-courses">
-    
       <h2 className="text-danger">
         <FaAlignJustify className="me-4 fs-4 mb-1" />
-        {course && course.name} &gt; {pathname.split("/")[4]}
+        {course && course.name}
+        {pathname.split("/")[4] && ` > ${pathname.split("/")[4]}`}
       </h2>
       <hr />
       <div className="d-flex">
@@ -30,8 +31,6 @@ export default function Courses({ courses }: { courses: any[]; }) {
             <Route path="Modules" element={<Modules />} />
             <Route path="Assignments" element={<Assignments />} />
             <Route path="Assignments/:aid" element={<Editor />} />
-
-          
             <Route path="People" element={<PeopleTable />} />
             <Route path="Piazza" element={<h2>Piazza</h2>} />
             <Route path="Zoom" element={<h2>Zoom</h2>} />
@@ -40,7 +39,6 @@ export default function Courses({ courses }: { courses: any[]; }) {
           </Routes>
         </div>
       </div>
-    </div> 
-    //</Container>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import "./index.css";
 import { Container } from "react-bootstrap";
 import BackgroundColors from "./BackgroundColors";
 import Borders from "./Borders";
@@ -8,6 +7,7 @@ import Flex from "./Flex";
 import Float from "./Float";
 import ForegroundColors from "./ForegroundColors";
 import GridLayout from "./GridLayout";
+import "./index.css";
 import Margins from "./Margins";
 import Padding from "./Padding";
 import Positions from "./Positions";

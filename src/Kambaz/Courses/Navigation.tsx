@@ -1,21 +1,33 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { courses } from "../Database";
-import { ListGroup } from "react-bootstrap";
-
 export default function CoursesNavigation() {
-  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
-  
   const { cid } = useParams();
-  const course = courses.find((course) => course._id === cid);
-
   const { pathname } = useLocation();
+  const links = [
+    "Home",
+    "Modules",
+    "Piazza",
+    "Zoom",
+    "Assignments",
+    "Quizzes",
+    "Grades",
+    "People",
+  ];
   return (
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
+      <div className="wd-sem-title mb-3 ms-3 me-3">
+        202510_2 Spring 2025 Semester...
+      </div>
       {links.map((link) => (
-        <ListGroup.Item key={link} as={Link} to={`/Kambaz/Courses/${course?._id}/${link}`} className={`list-group-item active border border-0
-          ${pathname.includes(link) ? "list-group-item active border border-0" : "list-group-item active border border-0"}`}> {link}
-        </ListGroup.Item>
+        <Link
+          to={`/Kambaz/Courses/${cid}/${link}`}
+          id={`wd-course-${link}-link`}
+          className={`list-group-item border-0 ${
+            pathname.includes(link) ? "active border" : "text-danger"
+          }`}
+        >
+          {link}
+        </Link>
       ))}
-     </div>
-    );
-  } 
+    </div>
+  );
+}

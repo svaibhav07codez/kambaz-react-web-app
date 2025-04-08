@@ -8,7 +8,8 @@ export default function AccountNavigation() {
   return (
     <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
       {currentUser ? (
-        <Link to={'/Kambaz/Account/Profile'}
+        <Link
+          to={`/Kambaz/Account/Profile`}
           className={`list-group-item ${
             pathname.includes("Profile") ? "active border" : "text-danger"
           } border-0`}
@@ -18,7 +19,7 @@ export default function AccountNavigation() {
       ) : (
         <>
           <Link
-            to={'/Kambaz/Account/Signin'}
+            to={`/Kambaz/Account/Signin`}
             className={`list-group-item ${
               pathname.includes("Signin") ? "active border" : "text-danger"
             } border-0`}
@@ -26,7 +27,7 @@ export default function AccountNavigation() {
             Signin
           </Link>
           <Link
-            to={'/Kambaz/Account/Signup'}
+            to={`/Kambaz/Account/Signup`}
             className={`list-group-item ${
               pathname.includes("Signup") ? "active border" : "text-danger"
             } border-0`}

@@ -2,30 +2,33 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setCurrentUser } from "./reducer";
-import * as db from "../Database";
+import * as client from "./client"; // 🔁 use this to call backend
+
 export default function Signin() {
   const [credentials, setCredentials] = useState<any>({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const signin = () => {
-    const user = db.users.find(
-      (u: any) =>
-        u.username === credentials.username &&
-        u.password === credentials.password
-    );
-    if (!user) {
-      alert("Incorrect username or password."); 
-      return;
+
+  const signin = async () => {
+    try {
+      const user = await client.signin(credentials); // 🔥 send to server
+      if (!user || !user._id) {
+        alert("Incorrect username or password.");
+        return;
+      }
+      dispatch(setCurrentUser(user));
+      navigate("/Kambaz/Dashboard");
+    } catch (err) {
+      console.error("Sign in failed:", err);
+      alert("Error signing in.");
     }
-    dispatch(setCurrentUser(user));
-    navigate("/Kambaz/Dashboard");
   };
 
   return (
     <div id="wd-signin-screen">
       <h3>Sign in</h3>
       <input
-        defaultValue={credentials.username}
+        value={credentials.username || ""}
         onChange={(e) =>
           setCredentials({ ...credentials, username: e.target.value })
         }
@@ -34,7 +37,7 @@ export default function Signin() {
         className="form-control mb-2"
       />
       <input
-        defaultValue={credentials.password}
+        value={credentials.password || ""}
         onChange={(e) =>
           setCredentials({ ...credentials, password: e.target.value })
         }
@@ -48,10 +51,11 @@ export default function Signin() {
         id="wd-signin-btn"
         className="btn btn-primary w-100"
       >
-        {" "}
-        Sign in{" "}
+        Sign in
       </button>
-      <Link id="wd-signup-link" to="/Kambaz/Account/Signup"> Sign up </Link>
+      <Link id="wd-signup-link" to="/Kambaz/Account/Signup">
+        Sign up
+      </Link>
     </div>
   );
 }

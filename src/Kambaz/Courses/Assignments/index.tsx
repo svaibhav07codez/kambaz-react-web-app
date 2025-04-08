@@ -4,30 +4,57 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
 import AssignmentEditor from "./AssignmentEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import AssignmentControls from "./AssignmentControls";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import * as client from "./client"; // <-- ✅ Import the client
+import {
+  deleteAssignment as deleteAssignmentAction,
+  setAssignments,
+} from "./reducer";
 
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [showEditor, setShowEditor] = useState(false);
-  const [editingAssignment] = useState(null);
-  const navigate = useNavigate(); // Get navigate function
+  const [editingAssignment, setEditingAssignment] = useState<any>(null);
 
   const handleNavigate = (assignmentId: string) => {
-    // Ensure the correct URL format by replacing the entire hash path
     navigate(`/Kambaz/Courses/${cid}/Assignments/${assignmentId}`);
   };
 
+  const handleEditClick = (assignment: any) => {
+    setEditingAssignment(assignment);
+    setShowEditor(true);
+  };
+
+  const handleAddAssignment = () => {
+    setEditingAssignment(null);
+    setShowEditor(true);
+  };
+
+  const deleteAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignmentAction(assignmentId));
+  };
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      const data = await client.fetchAssignments(); // <-- or pass course ID if using course filter
+      dispatch(setAssignments(data));
+    };
+    fetchAssignments();
+  }, [cid]);
+
   return (
     <div id="wd-assignments" className="ms-5">
-      <AssignmentControls onAddAssignment={() => setShowEditor(true)} />
+      <AssignmentControls onAddAssignment={handleAddAssignment} />
 
       <br />
       <br />
@@ -53,11 +80,17 @@ export default function Assignments() {
                 >
                   <BsGripVertical className="fs-3 mt-4 me-3" />
 
-                  {currentUser?.role === "FACULTY" && (
+                  {currentUser?.role === "FACULTY" ? (
                     <FaRegPenToSquare
                       className="fs-3 mt-4 text-success me-3"
-                      onClick={() => handleNavigate(assignment._id)} // Call navigate function here
                       style={{ cursor: "pointer" }}
+                      onClick={() => handleEditClick(assignment)}
+                    />
+                  ) : (
+                    <FaRegPenToSquare
+                      className="fs-3 mt-4 text-success me-3"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleNavigate(assignment._id)}
                     />
                   )}
 
@@ -65,10 +98,16 @@ export default function Assignments() {
                     <a
                       className="wd-assignment-link wd-disabled-link"
                       onClick={(e) => {
-                        e.preventDefault(); // Prevent default anchor behavior
-                        handleNavigate(assignment._id); // Call navigate function here
+                        e.preventDefault();
+                        if (currentUser?.role !== "FACULTY") {
+                          handleNavigate(assignment._id);
+                        }
                       }}
-                      style={{ cursor: "pointer", textDecoration: "none", color: "inherit" }}
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "none",
+                        color: "inherit",
+                      }}
                     >
                       {assignment.title}
                     </a>
@@ -79,9 +118,11 @@ export default function Assignments() {
                       </span>
                       <span className="wd-assignment-subtext">
                         {" "}
-                        | <b>Not available until</b> {formatDate(assignment.availableAfterDate)} |
+                        | <b>Not available until</b>{" "}
+                        {formatDate(assignment.availableAfterDate)} |
                         <br />
-                        <b>Due</b> {formatDate(assignment.dueDate)} | {assignment.points} pts
+                        <b>Due</b> {formatDate(assignment.dueDate)} |{" "}
+                        {assignment.points} pts
                       </span>
                     </p>
                   </div>
@@ -89,7 +130,7 @@ export default function Assignments() {
                   {currentUser?.role === "FACULTY" && (
                     <AssignmentControlButtons
                       assignmentID={assignment._id}
-                      deleteAssignment={() => dispatch(deleteAssignment(assignment._id))}
+                      deleteAssignment={() => deleteAssignment(assignment._id)}
                     />
                   )}
                 </li>

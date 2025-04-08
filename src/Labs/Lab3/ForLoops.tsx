@@ -9,5 +9,6 @@ export default function ForLoops() {
       <div id="wd-for-loops">
         <h4>Looping through arrays</h4>
         stringArray2 = {stringArray2} <hr />
-      </div> 
-);}
+      </div>
+  );}
+  

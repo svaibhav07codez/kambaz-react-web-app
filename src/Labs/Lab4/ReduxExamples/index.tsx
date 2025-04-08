@@ -1,12 +1,14 @@
-import CounterRedux from "./CounterRedux";
 import HelloRedux from "./HelloRedux";
+import CounterRedux from "./CounterRedux";
+import AddRedux from "./AddRedux";
 
 export default function ReduxExamples() {
-  return(
+  return (
     <div>
       <h2>Redux Examples</h2>
-      <HelloRedux/>
-      <CounterRedux/>
+      <HelloRedux />
+      <CounterRedux />
+      <AddRedux />
     </div>
   );
-};
+}
