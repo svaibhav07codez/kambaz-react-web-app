@@ -1,17 +1,27 @@
 import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteTodo, setTodo } from "./todosReducer";
+import { ListGroup } from "react-bootstrap";
+
 export default function TodoList() {
   const { todos } = useSelector((state: any) => state.todosReducer);
+  const dispatch = useDispatch();
+
   return (
-    <div>
+    <div id="wd-todo-list-redux">
       <h2>Todo List</h2>
-      <ul className="list-group">
+      <ListGroup>
         <TodoForm />
         {todos.map((todo: any) => (
-          <TodoItem todo={todo} />
+          <TodoItem
+            key={todo.id} // Ensuring each TodoItem has a unique key
+            todo={todo}
+            deleteTodo={(id: string) => dispatch(deleteTodo(id))}
+            setTodo={(todo: { id: string; title: string }) => dispatch(setTodo(todo))}
+          />
         ))}
-      </ul>
+      </ListGroup>
       <hr />
     </div>
   );

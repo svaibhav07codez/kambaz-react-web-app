@@ -6,11 +6,9 @@ export default function BooleanStateVariables() {
       <h2>Boolean State Variables</h2>
       <p>{done ? "Done" : "Not done"}</p>
       <label className="form-control">
-        <input type="checkbox" checked={done} onChange={() => setDone(!done)} />{" "}
-        Done
+        <input type="checkbox" checked={done}
+               onChange={() => setDone(!done)} /> Done
       </label>
-      {done && <div className="alert alert-success">Yay! you are done</div>}
-      <hr />
-    </div>
-  );
-}
+      {done && <div className="alert alert-success">
+               Yay! you are done</div>}
+<hr/></div>);}

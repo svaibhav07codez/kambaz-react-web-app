@@ -17,21 +17,22 @@ export default function Lab4() {
         alert("Hello");
       }
     
-    return (
-        <div>
-            <ClickEvent />
-            <PassingDataOnEvent />
-            <PassingFunctions theFunction={sayHello}/>
-            <EventObject />
-            <Counter />
-            <BooleanStateVariables />
-            <StringStateVariables />
-            <DateStateVariable />
-            <ObjectStateVariable />
-            <ArrayStateVariable />
-            <ParentStateComponent />
-            <ReduxExamples />
-            <TodoList />
-        </div>
-    )
-}
+    console.log('Hello World!');
+    return(
+      <div id="wd-lab4">
+        <h3>Lab 4</h3>
+        <ClickEvent/>
+        <PassingDataOnEvent/>
+        <PassingFunctions theFunction={sayHello} />
+        <EventObject/>
+        <Counter/>
+        <BooleanStateVariables/>
+        <StringStateVariables/>
+        <DateStateVariable/>
+        <ObjectStateVariable/>
+        <ArrayStateVariable/>
+        <ParentStateComponent/>
+        <ReduxExamples/>
+        <TodoList/>
+      </div>
+    );}
