@@ -14,43 +14,49 @@ import {
 } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import * as coursesClient from "../client";
-import * as modulesClient from "./client"; // ✅ Import for deleting module
+import * as modulesClient from "./client";
 
 export default function Modules() {
   const { cid } = useParams();
   const [moduleName, setModuleName] = useState("");
-
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
+  const isFaculty = currentUser?.role === "FACULTY";
+
   const saveModule = async (module: any) => {
     await modulesClient.updateModule(module);
     dispatch(updateModule(module));
   };
-
-  const isFaculty = currentUser?.role === "FACULTY";
+  const deleteModuleHandler = async (moduleId: string) => {
+    await modulesClient.deleteModule(moduleId);
+    dispatch(deleteModule(moduleId));
+  };
 
   useEffect(() => {
-    const fetchModules = async () => {
-      const modules = await coursesClient.findModulesForCourse(cid as string);
+    const fetchModulesForCourse = async () => {
+      if (!cid) return;
+      const modules = await coursesClient.findModulesForCourse(cid);
       dispatch(setModules(modules));
     };
-    fetchModules();
+    fetchModulesForCourse();
   }, [cid]);
 
-  const createModuleForCourse = async () => {
+  const addModuleHandler = async () => {
     if (!cid) return;
-    const newModule = { name: moduleName, course: cid };
-    const module = await coursesClient.createModuleForCourse(cid, newModule);
-    dispatch(addModule(module));
+    const newModule = await coursesClient.createModuleForCourse(cid, {
+      name: moduleName,
+      course: cid,
+    });
+    dispatch(addModule(newModule));
     setModuleName("");
   };
 
-  // ✅ New: Remove module from server and then from state
   const removeModule = async (moduleId: string) => {
     await modulesClient.deleteModule(moduleId);
     dispatch(deleteModule(moduleId));
   };
+  console.log(removeModule);
 
   return (
     <div id="wd-modules">
@@ -58,7 +64,7 @@ export default function Modules() {
         <ModulesControls
           setModuleName={setModuleName}
           moduleName={moduleName}
-          addModule={createModuleForCourse}
+          addModule={addModuleHandler}
         />
       )}
 
@@ -104,7 +110,7 @@ export default function Modules() {
                   >
                     <ModuleControlButtons
                       moduleId={module._id}
-                      deleteModule={(moduleId) => removeModule(moduleId)} // ✅ updated
+                      deleteModule={(moduleId) => deleteModuleHandler(moduleId)}
                       editModule={(moduleId) => dispatch(editModule(moduleId))}
                     />
                   </div>

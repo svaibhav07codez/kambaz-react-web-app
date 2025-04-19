@@ -110,5 +110,19 @@
     "section": "S101",
     "lastActivity": "2020-11-11",
     "totalActivity": "21:32:43"
+  },
+  {
+    "_id": "236",
+    "username": "dark_knigh",
+    "password": "wayne12",
+    "firstName": "Bruc",
+    "lastName": "Wayn",
+    "email": "bruc@wayn.com",
+    "dob": "1972-02-19",
+    "role": "ADMIN",
+    "loginId": "001236542S",
+    "section": "S101",
+    "lastActivity": "2020-11-02",
+    "totalActivity": "15:32:43"
   }
 ]

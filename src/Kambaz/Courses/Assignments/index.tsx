@@ -46,7 +46,8 @@ export default function Assignments() {
 
   useEffect(() => {
     const fetchAssignments = async () => {
-      const data = await client.fetchAssignments(); // <-- or pass course ID if using course filter
+      if (!cid) return;
+      const data = await client.findAssignmentsForCourse(cid); // ✅ Use course-specific API
       dispatch(setAssignments(data));
     };
     fetchAssignments();

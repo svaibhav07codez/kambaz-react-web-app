@@ -8,14 +8,28 @@ export default function AccountNavigation() {
   return (
     <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
       {currentUser ? (
-        <Link
-          to={`/Kambaz/Account/Profile`}
-          className={`list-group-item ${
-            pathname.includes("Profile") ? "active border" : "text-danger"
-          } border-0`}
-        >
-          Profile
-        </Link>
+        <>
+          <Link
+            to={`/Kambaz/Account/Profile`}
+            className={`list-group-item ${
+              pathname.includes("Profile") ? "active border" : "text-danger"
+            } border-0`}
+          >
+            Profile
+          </Link>
+
+          {/* ✅ Conditionally render ADMIN-only Users link */}
+          {currentUser.role === "ADMIN" && (
+            <Link
+              to={`/Kambaz/Account/Users`}
+              className={`list-group-item ${
+                pathname.includes("Users") ? "active border" : "text-danger"
+              } border-0`}
+            >
+              Users
+            </Link>
+          )}
+        </>
       ) : (
         <>
           <Link
