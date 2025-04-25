@@ -86,7 +86,7 @@ export default function Dashboard({
                     className="wd-dashboard-course-link text-decoration-none text-dark"
                   >
                     <Card.Img
-                      src={course.image}
+                      src={course.imgSource}
                       variant="top"
                       width="100%"
                       height={160}
